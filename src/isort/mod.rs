@@ -6,10 +6,12 @@ use ropey::RopeBuilder;
 use rustpython_ast::{Stmt, StmtKind};
 
 use crate::isort::categorize::{categorize, ImportType};
+use crate::isort::comments::Comment;
 use crate::isort::sorting::{member_key, module_key};
 use crate::isort::types::{AliasData, ImportBlock, ImportFromData, Importable, OrderedImportBlock};
 
 mod categorize;
+mod comments;
 pub mod plugins;
 pub mod settings;
 mod sorting;
@@ -127,7 +129,8 @@ fn sort_imports(block: ImportBlock) -> OrderedImportBlock {
 }
 
 pub fn format_imports(
-    block: Vec<&Stmt>,
+    block: &[&Stmt],
+    comments: &[Comment],
     line_length: &usize,
     src: &[PathBuf],
     known_first_party: &BTreeSet<String>,
